@@ -14,8 +14,8 @@ Just testing out the new WinUI 3.
 - Find and remove duplicate songs from playlists (Only the ones you own again).
 
 ## Get up and running...
-
-You gonna need your own clientID and ClientSecret [Credentials.cs](../master/spotify.companion/Api/Spotify/Common/Credentials.cs).\
+1. Install [Windows App SDK](https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=vs-2022)
+2. You gonna need your own clientID and ClientSecret [Credentials.cs](../master/spotify.companion/Api/Spotify/Common/Credentials.cs).\
 Get your own credentials at [Spotify Developer dashboard](https://developer.spotify.com/dashboard/) (requires a Spotify account). 
 ```js
 internal static class Credentials
@@ -24,6 +24,7 @@ internal static class Credentials
     internal static readonly string ClientId = "";
 }
 ```
+3. Run and hope it doesn't crash :|
 
 ### Created with the help of:
 
