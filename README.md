@@ -2,6 +2,8 @@
 A simple app to play, merge or delete multiple playlists from your Spotify Library. 
 Just testing out the new WinUI 3.
 
+![Screenshot](https://user-images.githubusercontent.com/57948152/150827524-02e5c803-9296-41df-9abd-31449de527a4.jpg)
+
 ## Supported features
 
 - Merge multiple playlists.
