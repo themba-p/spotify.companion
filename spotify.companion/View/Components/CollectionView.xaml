@@ -1,0 +1,96 @@
+﻿<UserControl
+    x:Class="spotify.companion.View.Components.CollectionView"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:model="using:spotify.companion.Model"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
+        <DataTemplate x:Key="PlaylistDataTemplate" x:DataType="model:Playlist">
+            <Grid CornerRadius="8"
+                  ColumnSpacing="16"
+                  Padding="0 12 8 12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border CornerRadius="6"
+                        Height="48"
+                        Width="48"
+                        Margin="14 0 0 0">
+                    <Border.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.2"/>
+                    </Border.Background>
+                    <Image Stretch="UniformToFill">
+                        <Image.Source>
+                            <BitmapImage UriSource="{x:Bind ImageSource}" DecodePixelHeight="48" DecodePixelWidth="48"/>
+                        </Image.Source>
+                    </Image>
+                </Border>
+
+            <Grid Grid.Column="1"
+                  VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="14"
+                               FontWeight="Medium"
+                               Foreground="{ThemeResource PrimaryForegroundBrush}"
+                               TextWrapping="NoWrap"
+                               Text="{x:Bind DisplayName}"
+                               TextTrimming="CharacterEllipsis"/>
+                    <TextBlock FontSize="13"
+                               Foreground="{ThemeResource SecondaryForegroundBrush}"
+                               Grid.Row="1"
+                               TextTrimming="CharacterEllipsis">
+                           <Run Text="{x:Bind Owner.DisplayName, Mode=OneWay}"/>
+                           <Run Text="•"/>
+                           <Run Text="{x:Bind Count}"/><Run Text=" songs"/>
+                    </TextBlock>
+                </Grid>
+
+                <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                          Grid.Column="2" 
+                          MinWidth="0"
+                          Padding="0"/>
+
+                <Border x:Name="SelectedIndicator" 
+                        Background="{ThemeResource SecondaryForegroundBrush}"
+                        Opacity="0.9"
+                        CornerRadius="2"
+                        Grid.ColumnSpan="10"
+                        HorizontalAlignment="Left"
+                        Width="3"
+                        Height="20"
+                        Margin="4 0 0 0"
+                        Visibility="{x:Bind IsSelected, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <ListView x:Name="ContentView"
+                  ItemTemplate="{StaticResource PlaylistDataTemplate}"
+                  ItemsSource="{Binding AdvancedCollectionView}"
+                  Padding="8 0 16 12"
+                  SelectionMode="Extended"
+                  ItemContainerStyle="{StaticResource ListViewItemRevealStyle}"
+                  IsEnabled="{Binding IsPlaylistsLoading, Converter={StaticResource BoolNegationConverter}}">
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="SelectionChanged">
+                    <core:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,55 @@
+﻿<Page
+    x:Class="spotify.companion.View.MainPage"
+    xmlns:model="using:spotify.companion.Model"
+    xmlns:viewModels="using:spotify.companion.ViewModel"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:components="using:spotify.companion.View.Components"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    x:Name="Root">
+    <Page.DataContext>
+        <viewModels:MainPageViewModel x:Name="ViewModel"/>
+    </Page.DataContext>
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
+    </Page.Resources>
+
+    <Grid Padding="12 6 20 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <components:HeaderControl />
+        <components:MainHeaderNav Grid.Row="1" />
+        <components:MainHeaderTitle Grid.Row="2" />
+        <components:CollectionView  Grid.Row="3" Margin="-12 4 -20 0"/>
+        <components:MainCommandBar  Grid.Row="4" VerticalAlignment="Bottom" IsEnabled="{x:Bind ViewModel.IsPlaylistsLoading, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"/>
+        <Grid Grid.RowSpan="100" Margin="-12 0 -20 0">
+            <Border x:Name="PopupDismiss" 
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                    Opacity="0.90"
+                    Visibility="{x:Bind ViewModel.IsPopupDismissPanelOpen, Mode=OneWay}">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Tapped">
+                        <core:InvokeCommandAction Command="{Binding PopupDismissPanelCommand}" />
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Border>
+            
+            <components:PlaylistPopup VerticalAlignment="Bottom" Visibility="{x:Bind ViewModel.IsPopupOpen, Mode=OneWay}"/>
+            <components:DuplicatesFinder VerticalAlignment="Bottom" Visibility="{x:Bind ViewModel.IsDuplicatePopupOpen, Mode=OneWay, FallbackValue=Visible}"/>
+        </Grid>
+    </Grid>
+</Page>

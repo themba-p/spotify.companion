@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="spotify.companion.View.Components.HeaderControl"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="Root">
+    <UserControl.Resources>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
+    </UserControl.Resources>
+
+    <Grid Padding="0 0 0 6"
+          HorizontalAlignment="Stretch"
+          ColumnSpacing="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <muxc:AutoSuggestBox FontWeight="Normal"
+                             PlaceholderText="Search Your Library" 
+                             QueryIcon="Find"
+                             MinWidth="0"
+                             Text="{Binding FilterText, Mode=TwoWay}"
+                             IsEnabled="{Binding IsPlaylistsLoading, Converter={StaticResource BoolNegationConverter}}"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="spotify.companion.View.StartPage"
+    xmlns:viewModels="using:spotify.companion.ViewModel"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:components="using:spotify.companion.View.Components"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Dark">
+    <Page.Resources>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToObjectConverter x:Key="BoolNegationToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
+    </Page.Resources>
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind ViewModel.IsConnected, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" 
+                      FontSize="56" 
+                      Foreground="#03e7b8"
+                      Glyph="&#xe928;"
+                      Margin="0 0 0 4"
+                      VerticalAlignment="Center"/>
+            <TextBlock FontSize="16" 
+                       FontWeight="SemiBold"
+                       Foreground="{ThemeResource PrimaryColorBrush}"
+                       HorizontalAlignment="Center"
+                       Text="{StaticResource AppName}"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <components:NoInternet DataContext="{x:Bind ViewModel, Mode=OneWay}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{x:Bind ViewModel.IsConnected, Converter={StaticResource BoolNegationToVisibilityConverter}, Mode=OneWay}"/>
+
+        <muxc:ProgressRing Width="44" 
+                           Height="44" 
+                           HorizontalAlignment="Center"
+                           Value="0" 
+                           IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                           Margin="0 24"
+                           VerticalAlignment="Bottom"
+                           Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+    </Grid>
+</Page>

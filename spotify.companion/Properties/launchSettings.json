@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "spotify.companion (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "spotify.companion (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

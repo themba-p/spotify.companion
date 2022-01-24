@@ -1,0 +1,55 @@
+﻿<UserControl
+    x:Class="spotify.companion.View.Components.MainHeaderNav"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:model="using:spotify.companion.Model"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="Root">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="White" Opacity="0.02"/>
+    </UserControl.Resources>
+
+    <Grid Grid.Row="1" 
+          Padding="0 0 0 0"
+          Margin="0 8 0 0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <muxc:NavigationView x:Name="contentNav"
+                            IsBackButtonVisible="Collapsed"
+                            IsBackEnabled="True"
+                            IsSettingsVisible="False"
+                            MenuItemsSource="{Binding Categories, Mode=OneWay}"
+                            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                            Foreground="{ThemeResource PrimaryForegroundBrush}"
+                            PaneDisplayMode="Top">
+
+            <muxc:NavigationView.MenuItemTemplate>
+                <DataTemplate x:DataType="model:Category">
+                    <muxc:NavigationViewItem FontSize="15" FontWeight="SemiBold" Content="{x:Bind Title}"/>
+                </DataTemplate>
+            </muxc:NavigationView.MenuItemTemplate>
+        </muxc:NavigationView>
+        <Button Grid.Column="1"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding RefreshCommand}"
+                Height="32"
+                Margin="0 0 6 0"
+                Padding="0"
+                CornerRadius="24"
+                Width="32">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" 
+                      FontSize="16" 
+                      Glyph="&#xe72c;"/>
+        </Button>
+    </Grid>
+</UserControl>
