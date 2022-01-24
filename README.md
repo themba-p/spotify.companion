@@ -1,4 +1,4 @@
-# Spotify Companion (aka Origin I suck at naming things)
+# Origin for Spotify
 A simple app to play, merge or delete multiple playlists from your Spotify Library. 
 Just testing out the new WinUI 3.
 
