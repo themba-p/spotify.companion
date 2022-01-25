@@ -81,19 +81,14 @@ namespace spotify.companion.ViewModel
                     {
                         IsPlaylistsLoading = true;
 
-                        List<object> items = AdvancedCollectionView.ToList();
-                        WeakReferenceMessenger.Default.Send(
-                            new Helpers.ViewMessengerHelper(ViewHelperType.SelectItems, items));
+                        var items = ItemsCollection.ToList();
+                        items.ForEach(item => item.IsSelected = true);
 
                         IsPlaylistsLoading = false;
                     });
                 }
             });
             ClearSelectedCommand = new(ClearSelected);
-            SelectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>((e) =>
-            {
-                if (e != null) SetSelectedItems(e.AddedItems, e.RemovedItems);
-            });
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
 
             /** -----------------------------------**/

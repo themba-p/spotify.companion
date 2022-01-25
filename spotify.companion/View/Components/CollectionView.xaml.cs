@@ -25,10 +25,6 @@ namespace spotify.companion.View.Components
         {
             this.InitializeComponent();
 
-            WeakReferenceMessenger.Default.Register<Helpers.SelectionMessengerHelper>(this, (r, m) =>
-            {
-                HandleSelectionChangedMessenger(m);
-            });
             WeakReferenceMessenger.Default.Register<Helpers.ViewMessengerHelper>(this, (r, m) =>
             {
                 switch (m.Type)
@@ -38,37 +34,10 @@ namespace spotify.companion.View.Components
                         if (payload != null)
                             ContentView.ScrollIntoView(payload, ScrollIntoViewAlignment.Leading);
                         break;
-                    case Enums.ViewHelperType.ClearSelected:
-                        ContentView.SelectedItems.Clear();
-                        break;
-                    case Enums.ViewHelperType.SelectItems:
-                        if (m.Payload != null && m.Payload is List<object> collection)
-                        {
-                            foreach (var item in collection)
-                            {
-                                ContentView.SelectedItems.Add(item);
-                            }
-                        }
-                        break;
                     default:
                         break;
                 }
             });
-        }
-
-        private void HandleSelectionChangedMessenger(Helpers.SelectionMessengerHelper e)
-        {
-            if (e.AddedItems != null)
-            {
-                foreach (var item in e.AddedItems)
-                    ContentView.SelectedItems.Add(item);
-            }
-
-            if (e.RemovedItems != null)
-            {
-                foreach (var item in e.RemovedItems)
-                    ContentView.SelectedItems.Remove(item);
-            }
         }
     }
 }

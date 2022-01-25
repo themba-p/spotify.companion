@@ -479,6 +479,9 @@
                               Command="{Binding FindDuplicatesCommand}"
                               Label="Find duplicates"/>
                 <AppBarSeparator/>
+                <AppBarButton Icon="SelectAll" 
+                              Label="Select All"
+                              Command="{Binding SelectAllCommand}"/>
                 <AppBarButton Icon="ClearSelection" 
                               Label="Clear Selected items"
                               IsEnabled="{Binding NoSelectedItems, Converter={StaticResource BoolNegationConverter}}"

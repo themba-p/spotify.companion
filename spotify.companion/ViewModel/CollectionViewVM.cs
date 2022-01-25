@@ -57,36 +57,7 @@ namespace spotify.companion.ViewModel
 
             item.SelectedChanged = null;
             ItemsCollection.Remove(item);
-            if (SelectedItems.Contains(item)) SelectedItems.Remove(item);
-        }
-
-        public void SetSelectedItems(IList<object> added, IList<object> removed)
-        {
-            if (added != null)
-            {
-                foreach (var item in added)
-                {
-                    if (item is ItemBase media)
-                    {
-                        media.IsSelected = true;
-                        SelectedItems.Add(media);
-                    }
-                }
-            }
-
-            if (removed != null)
-            {
-                foreach (var item in removed)
-                {
-                    if (item is ItemBase media)
-                    {
-                        media.IsSelected = false;
-                        SelectedItems.Remove(media);
-                    }
-                }
-            }
-
-            SelectedPreviewUrl = SelectedItems.LastOrDefault()?.ImageSource;
+            if (item.IsSelected) RemoveSelected(new List<ItemBase> { item });
         }
 
         private void ItemBaseIsSelectedChanged(ItemBase itemBase)
@@ -94,25 +65,35 @@ namespace spotify.companion.ViewModel
             if (itemBase == null) return;
 
             if (!itemBase.IsSelected)
-            {
-                WeakReferenceMessenger.Default.Send(
-                    new Helpers.SelectionMessengerHelper(null, new List<object> { itemBase }));
-            }
+                RemoveSelected(new List<ItemBase> { itemBase });
             else
+                AddSelected(new List<ItemBase> { itemBase });
+        }
+
+        private void AddSelected(List<ItemBase> collection)
+        {
+            collection.ForEach((item) =>
             {
-                WeakReferenceMessenger.Default.Send(
-                    new Helpers.SelectionMessengerHelper(new List<object> { itemBase }, null));
-            }
+                if (!SelectedItems.Contains(item))
+                    SelectedItems.Add(item);
+            });
+        }
+
+        private void RemoveSelected(List<ItemBase> collection)
+        {
+            collection.ForEach((item) => SelectedItems.Remove(item));
         }
 
         private void ClearSelected()
         {
-            WeakReferenceMessenger.Default.Send(new Helpers.ViewMessengerHelper(ViewHelperType.ClearSelected));
+            var selected = SelectedItems.ToList();
+            selected.ForEach(c => c.IsSelected = false);
             SelectedItems.Clear();
         }
 
         private void SelectedItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            SelectedPreviewUrl = SelectedItems.LastOrDefault()?.ImageSource;
             NoSelectedItems = (SelectedItems.Count == 0);
             CanMerge = (SelectedItems.Count > 1);
         }
@@ -186,7 +167,6 @@ namespace spotify.companion.ViewModel
             set => SetProperty(ref _selectedItems, value);
         }
 
-        public RelayCommand<SelectionChangedEventArgs> SelectionChangedCommand { get; }
         public RelayCommand ClearSelectedCommand { get; }
         public RelayCommand SelectAllCommand { get; }
         public RelayCommand RefreshCommand { get; }

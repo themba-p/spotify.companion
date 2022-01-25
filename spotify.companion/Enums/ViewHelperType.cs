@@ -3,8 +3,6 @@
     public enum ViewHelperType
     {
         ScrollToTop,
-        ClearSelected,
-        SelectItems,
         ScrollDuplicatesToView,
     }
 }
