@@ -10,7 +10,7 @@ Just testing out the new WinUI 3.
 - Clone a playlist (even if you don't own it).
 - Unfollow/Delete multiple playlists (only the ones you created obviously).
 - Save your Liked Songs into a playlist.
-- Remoe all Liked Songs.
+- Remove all Liked Songs.
 - Find and remove duplicate songs from playlists (Only the ones you own again).
 
 ## Get up and running...
