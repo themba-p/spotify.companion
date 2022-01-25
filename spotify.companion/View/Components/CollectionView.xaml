@@ -13,15 +13,22 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
         <DataTemplate x:Key="PlaylistDataTemplate" x:DataType="model:Playlist">
-            <Grid CornerRadius="8"
+            <Grid Background="{ThemeResource ListViewItemBackground}"
+                  CornerRadius="8"
                   ColumnSpacing="16"
-                  Padding="0 12 8 12">
+                  Padding="0 12 0 12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
+                <Grid x:Name="SelectedBackground"
+                      Background="{ThemeResource ListViewItemBackgroundSelected}"
+                      Grid.ColumnSpan="10"
+                      Margin="0 -12"
+                      Visibility="{x:Bind IsSelected, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+                
                 <Border CornerRadius="6"
                         Height="48"
                         Width="48"
@@ -35,9 +42,8 @@
                         </Image.Source>
                     </Image>
                 </Border>
-
-            <Grid Grid.Column="1"
-                  VerticalAlignment="Center">
+                <Grid Grid.Column="1"
+                      VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -57,12 +63,11 @@
                            <Run Text="{x:Bind Count}"/><Run Text=" songs"/>
                     </TextBlock>
                 </Grid>
-
                 <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
                           Grid.Column="2" 
+                          Margin="0 0 24 0"
                           MinWidth="0"
                           Padding="0"/>
-
                 <Border x:Name="SelectedIndicator" 
                         Background="{ThemeResource SecondaryForegroundBrush}"
                         Opacity="0.9"
@@ -71,26 +76,82 @@
                         HorizontalAlignment="Left"
                         Width="3"
                         Height="20"
-                        Margin="4 0 0 0"
+                        Margin="0 0 0 0"
                         Visibility="{x:Bind IsSelected, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
             </Grid>
         </DataTemplate>
+        <Style TargetType="ListViewItem" x:Key="ListViewItemRevealStyle">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+            <Setter Property="TabNavigation" Value="Local" />
+            <Setter Property="IsHoldingEnabled" Value="True" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0 0 0 6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+            <Setter Property="MinHeight" Value="{ThemeResource ListViewItemMinHeight}" />
+            <Setter Property="AllowDrop" Value="False" />
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+            <Setter Property="FocusVisualMargin" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                                               x:Name="Root"
+                                               CornerRadius="6"
+                                               Control.IsTemplateFocusTarget="True"
+                                               FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                               SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                               CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                               CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                               DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                               DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                               FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                               FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                               PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                               PointerOverBackground="{ThemeResource ListViewItemBackgroundPointerOver}"
+                                               PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                               SelectedBackground="{ThemeResource ListViewItemBackgroundSelected}"
+                                               SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                               SelectedPointerOverBackground="{ThemeResource ListViewItemBackgroundSelectedPointerOver}"
+                                               PressedBackground="{ThemeResource ListViewItemBackgroundPressed}"
+                                               SelectedPressedBackground="{ThemeResource ListViewItemBackgroundSelectedPressed}"
+                                               DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                               DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                               ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                               ContentMargin="{TemplateBinding Padding}"
+                                               CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                               RevealBackground="{ThemeResource ListViewItemRevealBackground}"
+                                               RevealBorderThickness="{ThemeResource ListViewItemRevealBorderThemeThickness}"
+                                               RevealBorderBrush="{ThemeResource ListViewItemRevealBorderBrush}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Selected"/>
+                                </VisualStateGroup>
+
+                            </VisualStateManager.VisualStateGroups>
+                        </ListViewItemPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <ListView x:Name="ContentView"
                   ItemTemplate="{StaticResource PlaylistDataTemplate}"
                   ItemsSource="{Binding AdvancedCollectionView}"
-                  Padding="8 0 16 12"
-                  SelectionMode="Extended"
+                  Padding="10 0 16 12"
+                  SelectionMode="None"
                   ItemContainerStyle="{StaticResource ListViewItemRevealStyle}"
-                  IsEnabled="{Binding IsPlaylistsLoading, Converter={StaticResource BoolNegationConverter}}">
+                  IsEnabled="{Binding IsPlaylistsLoading, Converter={StaticResource BoolNegationConverter}}"/>
 
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="SelectionChanged">
-                    <core:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </ListView>
     </Grid>
 </UserControl>
