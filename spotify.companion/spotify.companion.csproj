@@ -12,7 +12,6 @@
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Assets\no-connection.png" />
     <None Remove="Assets\no-internet.png" />
     <None Remove="Assets\spotify-icon-vector.svg" />
     <None Remove="View\Components\CollectionView.xaml" />
@@ -64,9 +63,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Assets\no-connection.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Update="Assets\no-internet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
