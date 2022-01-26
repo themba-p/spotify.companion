@@ -12,8 +12,8 @@
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>spotify.companion</DisplayName>
-    <PublisherDisplayName>Mndeb</PublisherDisplayName>
+    <DisplayName>Origin</DisplayName>
+    <PublisherDisplayName>Themba Mndebele</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,18 +31,19 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="spotify.companion"
-        Description="spotify.companion"
+        DisplayName="Origin"
+        Description="Play, Merge, Unfollow multiple Spotify playlists with Origin. Clear or save your Liked songs into a playlist, find duplicated tracks inside your playlists and remove them"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  ShortName="Origin"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="#1A191F"/>
       </uap:VisualElements>
     </Application>
   </Applications>
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
+    <Capability Name="internetClient"/>
   </Capabilities>
 </Package>

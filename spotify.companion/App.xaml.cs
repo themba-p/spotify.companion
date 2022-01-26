@@ -38,7 +38,7 @@ namespace spotify.companion
             //Get the Window's HWND
             var windowNative = m_window.As<IWindowNative>();
             m_windowHandle = windowNative.WindowHandle;
-            m_window.Title = "Spotify Companion";
+            m_window.Title = "Origin";
             SetWindowSize(m_windowHandle, 380, 600);
 
                       
