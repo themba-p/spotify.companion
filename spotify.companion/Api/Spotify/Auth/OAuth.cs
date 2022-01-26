@@ -78,7 +78,7 @@ namespace spotify.companion.Api.Spotify.Auth
             {
                 Scope = new List<string> { UserReadPrivate, PlaylistReadPrivate,
                     UserLibraryModify, UserLibraryRead, PlaylistModifyPrivate,
-                    PlaylistModifyPublic, UgcImageUpload, UserReadEmail }
+                    PlaylistModifyPublic, UserReadEmail }
             };
             BrowserUtil.Open(request.ToUri());
         }
