@@ -183,7 +183,32 @@ namespace spotify.companion.Broker
 
             if (ids == null || ids.Count == 0) return false;
 
-            return await Api.Spotify.Data.Playlist.RemoveLikedAsync(SpotifyClient, ids);
+            //'Max 50 IDs at once'
+            bool result = false;
+
+            if (ids.Count < 50)
+            {
+                await Api.Spotify.Data.Playlist.RemoveLikedAsync(SpotifyClient, ids);
+            }
+            else
+            {
+                int index = 0;
+                int count = 50;
+                int max = ids.Count;
+                int sum = max;
+
+                List<string> temp;
+                while (index < max)
+                {
+                    temp = ids.GetRange(index, count);
+                    result = await Api.Spotify.Data.Playlist.RemoveLikedAsync(SpotifyClient, temp); ;
+                    index += count;
+                    sum -= count;
+                    if (sum <= 50) count = sum;
+                }
+            }
+
+            return result;
         }
 
         public static async Task<List<TrackCompareItem>> GetTracksToCompareAsync(string id)
