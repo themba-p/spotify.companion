@@ -105,43 +105,98 @@ namespace spotify.companion.Api.Spotify.Data
 
         public static async Task<List<string>> GetTracksIdsAsync(SpotifyClient SpotifyClient, string id)
         {
-            PlaylistGetItemsRequest request = new();
-            request.Fields.Add("items(track(id, type))");
+            return await GetTracksPropAsync(SpotifyClient, id, "id");
+            //PlaylistGetItemsRequest request = new();
+            //request.Fields.Add("items(track(id, type))");
 
-            try
-            {
-                List<string> ids = new();
-                var page = await SpotifyClient.Playlists.GetItems(id, request);
+            //try
+            //{
+            //    List<string> ids = new();
+            //    var page = await SpotifyClient.Playlists.GetItems(id, request);
 
-                await foreach (var item in SpotifyClient.Paginate(page))
-                {
-                    if (item.Track is FullTrack fullTrack)
-                        ids.Add(fullTrack.Id);
-                }
+            //    await foreach (var item in SpotifyClient.Paginate(page))
+            //    {
+            //        if (item.Track is FullTrack fullTrack)
+            //            ids.Add(fullTrack.Id);
+            //    }
 
-                return ids;
-            }
-            catch (Exception)
-            {
-                HandleError(SpotifyClient);
-                return null;
-            }
+            //    return ids;
+            //}
+            //catch (Exception)
+            //{
+            //    HandleError(SpotifyClient);
+            //    return null;
+            //}
         }
 
         public static async Task<List<string>> GetTracksUrisAsync(SpotifyClient SpotifyClient, string id)
         {
+            return await GetTracksPropAsync(SpotifyClient, id, "uri");
+            //PlaylistGetItemsRequest request = new();
+            //request.Fields.Add("items(track(uri, type)), next");
+
+            //try
+            //{
+            //    List<string> uris = new();
+            //    var page = await SpotifyClient.Playlists.GetItems(id, request);
+
+            //    Action<Paging<PlaylistTrack<IPlayableItem>>> processPage = new(async(page) =>
+            //    {
+            //        string uri;
+            //        await foreach (var item in SpotifyClient.Paginate(page))
+            //        {
+            //            if (item.Track is FullTrack fullTrack)
+            //            {
+            //                uri = fullTrack.Uri;
+            //                if (!uris.Contains(uri)) uris.Add(uri);
+            //            }
+            //        }
+            //    });
+
+            //    while (page != null)
+            //    {
+            //        processPage(page);
+            //        if (page.Next == null) break;
+            //        page = await SpotifyClient.NextPage(page);
+            //    }
+
+            //    return uris;
+            //}
+            //catch (Exception)
+            //{
+            //    HandleError(SpotifyClient);
+            //    return null;
+            //}
+        }
+
+        private static async Task<List<string>> GetTracksPropAsync(SpotifyClient SpotifyClient, string id, string prop)
+        {
             PlaylistGetItemsRequest request = new();
-            request.Fields.Add("items(track(uri, type))");
+            request.Fields.Add("items(track(" + prop + ", type)), next");
 
             try
             {
                 List<string> uris = new();
                 var page = await SpotifyClient.Playlists.GetItems(id, request);
 
-                await foreach (var item in SpotifyClient.Paginate(page))
+                Action<Paging<PlaylistTrack<IPlayableItem>>> processPage = new(async (page) =>
                 {
-                    if (item.Track is FullTrack fullTrack)
-                        uris.Add(fullTrack.Uri);
+                    string uri;
+                    await foreach (var item in SpotifyClient.Paginate(page))
+                    {
+                        if (item.Track is FullTrack fullTrack)
+                        {
+                            uri = fullTrack.Uri;
+                            if (!uris.Contains(uri)) uris.Add(uri);
+                        }
+                    }
+                });
+
+                while (page != null)
+                {
+                    processPage(page);
+                    if (page.Next == null) break;
+                    page = await SpotifyClient.NextPage(page);
                 }
 
                 return uris;
