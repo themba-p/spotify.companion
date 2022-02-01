@@ -2,7 +2,6 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Controls;
 using spotify.companion.Broker;
 using spotify.companion.Enums;
 using spotify.companion.Model;

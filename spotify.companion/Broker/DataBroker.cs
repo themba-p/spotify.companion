@@ -118,10 +118,10 @@ namespace spotify.companion.Broker
 
                     if (newPlaylist == null) callbackFunc(null);
 
-                    var success = await Api.Spotify.Data.Playlist.AddAsync(SpotifyClient, trackUris, newPlaylist.Id);
+                    var success = await AddToPlaylist(newPlaylist.Id, trackUris);
 
                     if (success)
-                        callbackFunc(Playlist.Convert(await Api.Spotify.Data.Playlist.GetAsync(SpotifyClient, newPlaylist.Id)));
+                        callbackFunc(await GetPlaylistAsync(newPlaylist.Id));
                     else
                         callbackFunc(null);
                 }

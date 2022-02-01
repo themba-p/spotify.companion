@@ -65,8 +65,8 @@ namespace spotify.companion.ViewModel
                 {
                     dispatcher.TryEnqueue(() =>
                     {
-                        string message = (playlist == null) ? "Successfully Merged." : "Error merging playlists.";
-                        ResponseType type = (playlist == null) ? ResponseType.Success : ResponseType.Error;
+                        string message = (playlist != null) ? "Successfully Merged." : "Error merging playlists.";
+                        ResponseType type = (playlist != null) ? ResponseType.Success : ResponseType.Error;
 
                         InAppNotification notification = new(type, message, "", true);
                         WeakReferenceMessenger.Default.Send(notification);
